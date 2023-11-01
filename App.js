@@ -1,35 +1,26 @@
-import { Text, SafeAreaView, StyleSheet } from 'react-native';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Cadastro from './components/Telas/Cadastro/Index';
+import Login from './components/Telas/Login/index';
+const Stack = createStackNavigator();
 
-// You can import supported modules from npm
-import { Card } from 'react-native-paper';
-
-// or any files within the Snack
-import AssetExample from './components/AssetExample';
-
-export default function App() {
+const App = () => {
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.paragraph}>
-        Change code in the editor and watch it change on your phone! Save to get a shareable url.
-      </Text>
-      <Card>
-        <AssetExample />
-      </Card>
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator  initialRouteName="Login">
+        <Stack.Screen
+         name="Cadastro" 
+         component={Cadastro}  
+        options={{headerShown: true }}/>
+        <Stack.Screen
+         name="Login" 
+         component={Login}  
+        options={{headerShown: true }}/>
+      </Stack.Navigator> 
+    </NavigationContainer>
+    
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
-    padding: 8,
-  },
-  paragraph: {
-    margin: 24,
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-});
+export default App;
