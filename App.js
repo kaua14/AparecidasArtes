@@ -3,13 +3,16 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Cadastro from './components/Telas/Cadastro/Index';
 import Login from './components/Telas/Login/index';
+
 import {colors} from './components/Styles/styles';
 import { HeaderBackButton } from '@react-navigation/stack';
+
 const Stack = createStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
+
       <Stack.Navigator   screenOptions={{
           headerStyle: {
             backgroundColor: colors.primaryBackground,
@@ -32,6 +35,13 @@ const App = () => {
             ),
           })}
         />
+
+      <Stack.Navigator  initialRouteName="Login">
+        <Stack.Screen
+         name="Cadastro" 
+         component={Cadastro}  
+        options={{headerShown: true }}/>
+
         <Stack.Screen
          name="Login" 
          component={Login}  

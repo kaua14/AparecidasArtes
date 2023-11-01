@@ -3,14 +3,18 @@ import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import firebase from 'firebase';
 import { db } from '../../../firebaseConfig';
+
 import { styles } from '../../Styles/styles';
+
 
 const Cadastro = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [profileImage, setProfileImage] = useState(null);
+
   const [error, setError] = useState('');
+
 
   useEffect(() => {
     (async () => {
@@ -31,6 +35,9 @@ const Cadastro = ({ navigation }) => {
       });
 
       if (result.canceled) {
+
+        // Usuário cancelou a seleção de imagem, não faça nada
+
         return;
       }
 
@@ -46,7 +53,11 @@ const Cadastro = ({ navigation }) => {
 
   const handleSignUp = () => {
     if (displayName.trim() === '' || !profileImage) {
+
       setError('Nome de usuário e imagem de perfil são obrigatórios.');
+
+      console.error('Nome de usuário e imagem de perfil são obrigatórios.');
+
       return;
     }
 
@@ -65,6 +76,7 @@ const Cadastro = ({ navigation }) => {
           })
           .then(() => {
             console.log('Usuário salvo no Firebase');
+
             navigation.navigate('Login'); // Redireciona de volta para a tela de login após o cadastro bem-sucedido
           })
           .catch(error => {
@@ -73,14 +85,30 @@ const Cadastro = ({ navigation }) => {
       })
       .catch(error => {
         setError('Erro de cadastro: ' + error.message);
+
+            navigation.navigate('Login');
+          })
+          .catch(error => {
+            console.error('Erro ao salvar o usuário:', error);
+          });
+      })
+      .catch(error => {
+        console.error('Erro de cadastro:', error);
+
       });
   };
 
   return (
+
     <View style={styles.container}>
       <Text>Cadastro</Text>
       <TextInput
         style={styles.input}
+
+    <View>
+      <Text>Cadastro</Text>
+      <TextInput
+
         placeholder="Email"
         onChangeText={text => setEmail(text)}
         value={email}
@@ -88,18 +116,23 @@ const Cadastro = ({ navigation }) => {
         autoCapitalize="none"
       />
       <TextInput
+
         style={styles.input}
+
         placeholder="Senha"
         secureTextEntry
         onChangeText={text => setPassword(text)}
         value={password}
       />
       <TextInput
+
         style={styles.input}
+
         placeholder="Nome de usuário"
         onChangeText={text => setDisplayName(text)}
         value={displayName}
       />
+
       <TouchableOpacity style={styles.imagePicker} onPress={selectImage}>
         <Text>Selecione uma imagem de perfil</Text>
       </TouchableOpacity>
@@ -107,6 +140,14 @@ const Cadastro = ({ navigation }) => {
       {error && <Text style={styles.errorText}>{error}</Text>}
       <TouchableOpacity style={styles.button} onPress={handleSignUp}>
         <Text style={styles.buttonText}>Cadastrar</Text>
+
+      <TouchableOpacity onPress={selectImage}>
+        <Text>Selecione uma imagem de perfil</Text>
+      </TouchableOpacity>
+      {profileImage && <Image source={{ uri: profileImage }} style={{ width: 100, height: 100 }} />}
+      <TouchableOpacity onPress={handleSignUp}>
+        <Text>Cadastrar</Text>
+
       </TouchableOpacity>
     </View>
   );
