@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import firebase from 'firebase';
@@ -19,11 +18,12 @@ export default function Login() {
       .then(userCredential => {
         // Login successful, handle user data or navigation here
         console.log('User logged in successfully!', userCredential.user);
-        navigation.navigate(); // Navigate to WelcomePage after successful login
+        navigation.navigate('Agradecimento'); // Navigate to WelcomePage after successful login
       })
-      .catch(error => {
+        .catch(error => {
         // Handle errors here (e.g., display an error message)
-        Alert.alert('Error', error.message);
+        setError('Usuário ou senha inválidos'); // Set custom error message
+        console.error('Error:', error.message); // Log the actual error for debugging
       });
   };
 
@@ -37,45 +37,18 @@ export default function Login() {
       <Text>Email:</Text>
       <TextInput
         style={styles.input}
-=======
-import { View, Text, TextInput, Button } from 'react-native';
-import firebase from 'firebase';
-import { auth } from '../../../firebaseConfig';
-
-export default function LoginScreen() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleLogin = async () => {
-    try {
-      await auth().signInWithEmailAndPassword(email, password);
-      // Login bem-sucedido, redirecione para a próxima tela
-    } catch (error) {
-      console.error('Erro de login:', error);
-      // Lide com o erro de login (por exemplo, exiba uma mensagem de erro)
-    }
-  };
-
-  return (
-    <View>
-      <Text>Email:</Text>
-      <TextInput
-
         placeholder="Seu email"
         onChangeText={setEmail}
         value={email}
       />
       <Text>Senha:</Text>
       <TextInput
-
         style={styles.input}
-
         placeholder="Sua senha"
         onChangeText={setPassword}
         value={password}
         secureTextEntry
       />
-
       {error ? <Text style={styles.errorText}>{error}</Text> : null}
       <TouchableOpacity onPress={handleCadastroRedirect}>
         <Text style={styles.linkText}>Não tem cadastro ainda? Cadastre-se aqui</Text>
@@ -83,9 +56,6 @@ export default function LoginScreen() {
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
-
-      <Button title="Login" onPress={handleLogin} />
-
     </View>
   );
 }
